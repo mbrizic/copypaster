@@ -1,0 +1,31 @@
+{
+    "someAppModuleThatYouWantToUseAsTemplate": {
+        "replacementKey": "space_station",
+        "description": "",
+        "folders": [
+            "space-station/",
+            "space-station/space-station-parts"
+        ],
+        "files": [
+            "space-station/space-station.api.js",
+            "space-station/SpaceStation.js",
+            "space-station/space-station-parts/space-station-parts.service.js"
+        ],
+        "lines": [
+            {
+                "file": "example.routes.js",
+                "content": "\t\"space-station/space-station.api\","
+            }
+        ]
+    },
+    "someOtherModule": {
+        "replacementKey": "station",
+        "description": "Template made from Space Station app module.",
+        "folders": [
+            "space-station/"
+        ],
+        "files": [
+            "space-station/space-station.api.js"
+        ]
+    }
+}

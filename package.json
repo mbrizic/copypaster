@@ -1,0 +1,36 @@
+{
+	"name": "copypaster",
+	"version": "1.0.0",
+	"bin": {
+		"copypaster": "./dist/cli.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/mbrizic/copypaster"
+	},
+	"scripts": {
+		"start": "ts-node --transpile-only src/cli.ts",
+		"build": "tsc -p . && npm link --force && npm run test",
+		"test": "jest --forceExit --detectOpenHandles"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"ts-node": "^10.3.0",
+		"typescript": "^4.4.4",
+		"@types/supertest": "^2.0.11",
+		"@types/jest": "^27.0.2",
+		"supertest": "^6.1.6",
+		"jest": "^27.3.0",
+		"ts-jest": "^27.0.7"
+	},
+	"jest": {
+		"preset": "ts-jest",
+		"testEnvironment": "node",
+		"transform": {
+			"node_modules/variables/.+\\.(j|t)sx?$": "ts-jest"
+		},
+		"transformIgnorePatterns": [
+			"node_modules/(?!variables/.*)"
+		]
+	}
+}
