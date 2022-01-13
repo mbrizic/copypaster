@@ -25,20 +25,20 @@ const file_service_1 = require("./file.service");
 const path_1 = require("path");
 const util_1 = require("./util");
 const models_1 = require("./models");
-function generate(template, templateName, newName) {
-    const templateEntity = new models_1.Entity(templateName);
+function generate(template, newName) {
+    const templateEntity = new models_1.Entity(template.replacementKey);
     const newEntity = new models_1.Entity(newName);
     const files = template.files;
     const folders = template.folders;
-    const snippets = template.lines;
-    console.log(`\nGenerating entity "${newEntity.getCamelCase()}" from entity "${templateEntity.getCamelCase()}"`);
+    const snippets = template.snippets;
+    console.log(`\nGenerating entity "${newEntity.getSnakeCase()}" from entity "${templateEntity.getSnakeCase()}"`);
     generateFiles();
     function generateFiles() {
         folders && folders.forEach(folder => {
             const doesTemplateFolderExist = fs.existsSync(getAbsolutePath(folder));
             if (!doesTemplateFolderExist) {
                 console.log(`  Required template folder does not exist: ${folder}`);
-                process.exit();
+                return;
             }
             const newFolderPath = performAllReplacements(folder);
             (0, file_service_1.ensureDirectoryExists)(getAbsolutePath(newFolderPath));

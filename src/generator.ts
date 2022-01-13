@@ -5,16 +5,16 @@ import { join as joinPath } from 'path'
 import { replaceAll } from './util'
 import { ConfigFileTemplateDefinition, Entity, replacementFunctions } from './models'
 
-export function generate(template: ConfigFileTemplateDefinition, templateName: string, newName: string) {
+export function generate(template: ConfigFileTemplateDefinition, newName: string) {
 
-    const templateEntity = new Entity(templateName)
+    const templateEntity = new Entity(template.replacementKey)
     const newEntity = new Entity(newName)
 
     const files = template.files
     const folders = template.folders
-    const snippets = template.lines
+    const snippets = template.snippets
 
-    console.log(`\nGenerating entity "${newEntity.getCamelCase()}" from entity "${templateEntity.getCamelCase()}"`)
+    console.log(`\nGenerating entity "${newEntity.getSnakeCase()}" from entity "${templateEntity.getSnakeCase()}"`)
 
     generateFiles()
 
@@ -24,7 +24,7 @@ export function generate(template: ConfigFileTemplateDefinition, templateName: s
 
             if (!doesTemplateFolderExist) {
                 console.log(`  Required template folder does not exist: ${folder}`)
-                process.exit()
+                return
             }
 
             const newFolderPath = performAllReplacements(folder)

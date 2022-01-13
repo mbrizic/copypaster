@@ -11,7 +11,7 @@
             "space-station/SpaceStation.js",
             "space-station/space-station-parts/space-station-parts.service.js"
         ],
-        "lines": [
+        "snippets": [
             {
                 "file": "example.routes.js",
                 "content": "\t\"space-station/space-station.api\","
@@ -25,7 +25,8 @@
             "space-station/"
         ],
         "files": [
-            "space-station/space-station.api.js"
+            "space-station/space-station.api.js",
+            "space-station/SpaceStation.js"
         ]
     }
 }

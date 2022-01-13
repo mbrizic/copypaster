@@ -7,9 +7,9 @@ export interface ConfigFileTemplateDefinition {
     description: string,
     files: string[],
     folders: string[],
-    lines: ConfigFileLine[],
+    snippets: FileSnippet[],
 }
-export interface ConfigFileLine {
+export interface FileSnippet {
     file: string,
     content: string,
 }
