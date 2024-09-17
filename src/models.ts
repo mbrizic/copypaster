@@ -62,6 +62,26 @@ export class Entity {
         )
     }
 
+    getSentenceCase = () => {
+        return replaceAll(
+            this.snakeCaseName, "_", " "
+        )
+    }
+
+    getCapitalizedSentenceCase = () => {
+        const capitalized = this.snakeCaseName[0].toUpperCase() + this.snakeCaseName.slice(1)
+
+        return replaceAll(
+            capitalized, "_", " "
+        )
+    }
+
+    getTitleCase = () => {
+        return this.snakeCaseName.split("_").map((word, index) => {
+            return word[0].toUpperCase() + word.slice(1)
+        }).join(" ")
+    }
+
 }
 
 export const replacementFunctions: (keyof Entity)[] = [
@@ -71,5 +91,8 @@ export const replacementFunctions: (keyof Entity)[] = [
     "getLowerCase",
     "getUpperCase",
     "getKebabCase",
+    "getSentenceCase",
+    "getCapitalizedSentenceCase",
+    "getTitleCase"
 ] 
 

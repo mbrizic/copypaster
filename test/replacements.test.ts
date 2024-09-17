@@ -10,6 +10,9 @@ test('test entity replacements', () => {
     expect(singleWord.getLowerCase()).toBe("feature");
     expect(singleWord.getKebabCase()).toBe("feature");
     expect(singleWord.getUpperCase()).toBe("FEATURE");
+    expect(singleWord.getSentenceCase()).toBe("feature");
+    expect(singleWord.getCapitalizedSentenceCase()).toBe("Feature");
+    expect(singleWord.getTitleCase()).toBe("Feature");
 
     const twoWords = new Entity("some_feature")
 
@@ -19,6 +22,9 @@ test('test entity replacements', () => {
     expect(twoWords.getLowerCase()).toBe("somefeature");
     expect(twoWords.getKebabCase()).toBe("some-feature");
     expect(twoWords.getUpperCase()).toBe("SOMEFEATURE");
+    expect(twoWords.getSentenceCase()).toBe("some feature");
+    expect(twoWords.getCapitalizedSentenceCase()).toBe("Some feature");
+    expect(twoWords.getTitleCase()).toBe("Some Feature");
 
     const threeWords = new Entity("some_new_feature")
 
@@ -28,6 +34,9 @@ test('test entity replacements', () => {
     expect(threeWords.getLowerCase()).toBe("somenewfeature");
     expect(threeWords.getKebabCase()).toBe("some-new-feature");
     expect(threeWords.getUpperCase()).toBe("SOMENEWFEATURE");
+    expect(threeWords.getSentenceCase()).toBe("some new feature");
+    expect(threeWords.getCapitalizedSentenceCase()).toBe("Some new feature");
+    expect(threeWords.getTitleCase()).toBe("Some New Feature");
 
     const inputWithKebabCase = new Entity("some-feature")
 
@@ -37,6 +46,9 @@ test('test entity replacements', () => {
     expect(inputWithKebabCase.getLowerCase()).toBe("somefeature");
     expect(inputWithKebabCase.getKebabCase()).toBe("some-feature");
     expect(inputWithKebabCase.getUpperCase()).toBe("SOMEFEATURE");
+    expect(inputWithKebabCase.getSentenceCase()).toBe("some feature");
+    expect(inputWithKebabCase.getCapitalizedSentenceCase()).toBe("Some feature");
+    expect(inputWithKebabCase.getTitleCase()).toBe("Some Feature");
 });
 
 test('test if regex replacements are working fine with special characters', () => {
