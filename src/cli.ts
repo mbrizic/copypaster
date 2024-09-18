@@ -8,20 +8,38 @@ import { ConfigFile } from './models'
 
 const configFileName = 'copypaster.config.json'
 const currentDir = process.cwd()
-const configFilePath = getAbsolutePath(configFileName)
+const userDir = process.env.HOME || process.env.USERPROFILE || "~";
 
-if (!checkIfExists(configFilePath)) {
-    askShouldCreateConfigFile()
-} else {
-    const config = tryParseConfigJson()
+// Ordered by preference, searched from top to bottom
+const configurationFolders = [
+    currentDir,
+    userDir
+]
 
+var config;
+
+for (var configFolder of configurationFolders) {
+    if (checkIfExists(getAbsolutePath(configFolder, configFileName))) {
+        console.log(`Found a config file in ${configFolder}`) 
+        config = tryParseConfigJson(configFolder)
+        break;
+    }
+}
+
+if (config) {
     displayAvailableTemplates(config)
-
     handleUserInput(config)
+} else {
+    askShouldCreateConfigFile()
 }
 
 function askShouldCreateConfigFile() {
-    ask(`Can't find ${configFileName} in ${currentDir}. \nDo you want to create it? y/n `, answer => {
+    console.log(`Can't find ${configFileName} in neither of the supported directories:`)
+    configurationFolders.forEach(folder => {
+        console.log(`  - ${folder}`)
+    })
+
+    ask(`\nDo you want to create it in current folder? y/n `, answer => {
         if (answer.toLowerCase() == "y" || answer.toLowerCase() == "yes") {
             createTemplateConfigFile()
             exitWithErrorMessage(`  ${configFileName} created in current directory, please modify it based on your needs and run the tool again.`)
@@ -30,13 +48,14 @@ function askShouldCreateConfigFile() {
     })
 }
 
-function tryParseConfigJson(): ConfigFile {
+function tryParseConfigJson(configFolder: string): ConfigFile {
+    const filePath = getAbsolutePath(configFolder, configFileName);
+    const contents = readFile(filePath);
+
     try {
-        return JSON.parse(
-            readFile(getAbsolutePath(configFileName))
-        )
+        return JSON.parse(contents)
     } catch (e) {
-        exitWithErrorMessage(`${configFileName} might have some errors in it. Please double-check it.`)
+        exitWithErrorMessage(`${filePath} might have some errors in it. Please double-check it.`)
     }
 
     process.exit()
@@ -114,11 +133,14 @@ function createTemplateConfigFile() {
     }
 }`
 
-    writeFile(configFilePath, templateConfig)
+    writeFile(
+        getAbsolutePath(currentDir, configFileName),
+        templateConfig
+    )
 }
 
-function getAbsolutePath(path: string) {
-    return joinPath(currentDir, path)
+function getAbsolutePath(dir: string, file: string) {
+    return joinPath(dir, file)
 }
 
 function exitWithErrorMessage(error: string) {
