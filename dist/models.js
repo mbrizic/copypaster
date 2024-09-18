@@ -30,6 +30,18 @@ class Entity {
         this.getUpperCase = () => {
             return (0, util_1.replaceAll)(this.snakeCaseName.toUpperCase(), "_", "");
         };
+        this.getSentenceCase = () => {
+            return (0, util_1.replaceAll)(this.snakeCaseName, "_", " ");
+        };
+        this.getCapitalizedSentenceCase = () => {
+            const capitalized = this.snakeCaseName[0].toUpperCase() + this.snakeCaseName.slice(1);
+            return (0, util_1.replaceAll)(capitalized, "_", " ");
+        };
+        this.getTitleCase = () => {
+            return this.snakeCaseName.split("_").map((word, index) => {
+                return word[0].toUpperCase() + word.slice(1);
+            }).join(" ");
+        };
         if (name.includes("-")) {
             this.snakeCaseName = (0, util_1.replaceAll)(name, "-", "_");
         }
@@ -46,4 +58,7 @@ exports.replacementFunctions = [
     "getLowerCase",
     "getUpperCase",
     "getKebabCase",
+    "getSentenceCase",
+    "getCapitalizedSentenceCase",
+    "getTitleCase"
 ];

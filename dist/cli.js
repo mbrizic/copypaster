@@ -7,17 +7,33 @@ const prompt_1 = require("./prompt");
 const generator_1 = require("./generator");
 const configFileName = 'copypaster.config.json';
 const currentDir = process.cwd();
-const configFilePath = getAbsolutePath(configFileName);
-if (!(0, file_service_1.checkIfExists)(configFilePath)) {
-    askShouldCreateConfigFile();
+const userDir = process.env.HOME || process.env.USERPROFILE || "~";
+// Ordered by preference, searched from top to bottom
+const configurationFolders = [
+    currentDir,
+    userDir
+];
+var config;
+for (var configFolder of configurationFolders) {
+    if ((0, file_service_1.checkIfExists)(getAbsolutePath(configFolder, configFileName))) {
+        console.log(`Found a config file in ${configFolder}`);
+        config = tryParseConfigJson(configFolder);
+        break;
+    }
 }
-else {
-    const config = tryParseConfigJson();
+if (config) {
     displayAvailableTemplates(config);
     handleUserInput(config);
 }
+else {
+    askShouldCreateConfigFile();
+}
 function askShouldCreateConfigFile() {
-    (0, prompt_1.ask)(`Can't find ${configFileName} in ${currentDir}. \nDo you want to create it? y/n `, answer => {
+    console.log(`Can't find ${configFileName} in neither of the supported directories:`);
+    configurationFolders.forEach(folder => {
+        console.log(`  - ${folder}`);
+    });
+    (0, prompt_1.ask)(`\nDo you want to create it in current folder? y/n `, answer => {
         if (answer.toLowerCase() == "y" || answer.toLowerCase() == "yes") {
             createTemplateConfigFile();
             exitWithErrorMessage(`  ${configFileName} created in current directory, please modify it based on your needs and run the tool again.`);
@@ -25,12 +41,14 @@ function askShouldCreateConfigFile() {
         exitWithErrorMessage(`Ok, quitting`);
     });
 }
-function tryParseConfigJson() {
+function tryParseConfigJson(configFolder) {
+    const filePath = getAbsolutePath(configFolder, configFileName);
+    const contents = (0, file_service_1.readFile)(filePath);
     try {
-        return JSON.parse((0, file_service_1.readFile)(getAbsolutePath(configFileName)));
+        return JSON.parse(contents);
     }
     catch (e) {
-        exitWithErrorMessage(`${configFileName} might have some errors in it. Please double-check it.`);
+        exitWithErrorMessage(`${filePath} might have some errors in it. Please double-check it.`);
     }
     process.exit();
 }
@@ -89,10 +107,10 @@ function createTemplateConfigFile() {
         ]
     }
 }`;
-    (0, file_service_1.writeFile)(configFilePath, templateConfig);
+    (0, file_service_1.writeFile)(getAbsolutePath(currentDir, configFileName), templateConfig);
 }
-function getAbsolutePath(path) {
-    return (0, path_1.join)(currentDir, path);
+function getAbsolutePath(dir, file) {
+    return (0, path_1.join)(dir, file);
 }
 function exitWithErrorMessage(error) {
     console.error(error);

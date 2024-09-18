@@ -1,9 +1,12 @@
 {
 	"name": "copypaster",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"bin": {
 		"copypaster": "./dist/cli.js"
 	},
+	"keywords": [
+		"code generator"
+	],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/mbrizic/copypaster"
