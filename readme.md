@@ -24,11 +24,13 @@ You can see the example `copypaster.config.json` in `example` directory, but bas
 - `snippets` - array of individual snippets you want to copy (new line gets inserted right after the specified one)
 - `description` - decorative text explaining what the template does, not used in generated code
 
-Example: 
+The config file can be kept either in your working folder or in your home directory.
+
+Example of a config file: 
 
 ```json
 {
-    "someAppModuleThatYouWantToUseAsTemplate": {
+    "someBatchOfFilesYouWantToUseAsTemplate": {
         "replacementKey": "space_station",
         "description": "Template made from Space Station app module.",
         "folders": [
